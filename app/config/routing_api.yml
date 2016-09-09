@@ -1,0 +1,14 @@
+main:
+    type: rest
+    resource: 'AppBundle\Controller\DefaultController'
+
+# A modifier suivant les bundles que l'on crééra. Question : est-ce dans ce fichier qu'on crée l'API ?
+
+
+demo_user_all:
+    pattern:  /users
+    defaults: { _controller: AppBundle:User:all, _format: ~ }
+    requirements:
+        _method: GET
+
+#ceci est un exemple, suivez ce pattern. -> a tester avant.

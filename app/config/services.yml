@@ -1,0 +1,14 @@
+
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    crv.doctrine_entity_repository.blog_post:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments:
+            - AppBundle\Entity\
+
+#un service a créer par entity. Pour l'instant on n'a pas créé d'entity, donc bon.
