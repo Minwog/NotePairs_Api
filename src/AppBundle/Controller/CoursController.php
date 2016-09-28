@@ -10,13 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends FOSRestController
+class CoursController extends FOSRestController
 {
     /**
-     * @Route("/demo", name="homepage")
+     * @Route("/cours", name="homepage")
      */
 
-        public function indexAction()
+    public function indexAction()
     {
 
 

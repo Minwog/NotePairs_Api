@@ -2,16 +2,6 @@ main:
     type: rest
     resource: 'AppBundle\Controller\DefaultController'
 
-# A modifier suivant les bundles que l'on crééra.
-
-
-demo_user_all:
-    pattern:  /users
-    defaults: { _controller: AppBundle:User:all}
-    requirements:
-        _method: GET
-
-
-demo:
-    pattern:  /test
-    defaults: { _controller: AppBundle:Default:index}
+cours:
+    type: rest
+    resource: 'AppBundle\Controller\CoursController'
