@@ -1,0 +1,60 @@
+AppBundle\Entity\Critere:
+    type: entity
+    table: critere
+    repositoryClass: AppBundle\Repository\CritereRepository
+    indexes:
+        type_id:
+            columns:
+                - type_id
+        section_id:
+            columns:
+                - section_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        description:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        pointsMax:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+            column: points_max
+        ordre:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+    manyToOne:
+        type:
+            targetEntity: TypeCritere
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        section:
+            targetEntity: Section
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                section_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

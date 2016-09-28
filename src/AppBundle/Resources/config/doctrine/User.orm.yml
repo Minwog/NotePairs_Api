@@ -1,0 +1,76 @@
+AppBundle\Entity\User:
+    type: entity
+    table: user
+    repositoryClass: AppBundle\Repository\UserRepository
+    indexes:
+        role_id:
+            columns:
+                - role_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        username:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        email:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        nom:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        prenom:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        password:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        image:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        fiabilite:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        moyenne:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+    manyToOne:
+        role:
+            targetEntity: Role
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                role_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

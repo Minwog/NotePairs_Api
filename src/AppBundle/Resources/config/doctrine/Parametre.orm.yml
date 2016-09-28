@@ -1,0 +1,21 @@
+AppBundle\Entity\Parametre:
+    type: entity
+    table: parametre
+    repositoryClass: AppBundle\Repository\ParametreRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        extension:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

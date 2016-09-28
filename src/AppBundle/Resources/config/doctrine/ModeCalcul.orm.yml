@@ -1,0 +1,21 @@
+AppBundle\Entity\ModeCalcul:
+    type: entity
+    table: mode_calcul
+    repositoryClass: AppBundle\Repository\ModeCalculRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        mode:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

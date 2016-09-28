@@ -1,0 +1,66 @@
+AppBundle\Entity\Section:
+    type: entity
+    table: section
+    repositoryClass: AppBundle\Repository\SectionRepository
+    indexes:
+        type_rendu:
+            columns:
+                - type_rendu
+        evaluation_id:
+            columns:
+                - evaluation_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        titre:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        description:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+        enonce:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        ordre:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+    manyToOne:
+        typeRendu:
+            targetEntity: Parametre
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                type_rendu:
+                    referencedColumnName: id
+            orphanRemoval: false
+        evaluation:
+            targetEntity: Evaluation
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                evaluation_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

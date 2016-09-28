@@ -1,0 +1,115 @@
+AppBundle\Entity\Evaluation:
+    type: entity
+    table: evaluation
+    repositoryClass: AppBundle\Repository\EvaluationRepository
+    indexes:
+        enseignant_id:
+            columns:
+                - enseignant_id
+        cours_id:
+            columns:
+                - cours_id
+        mode_calcul:
+            columns:
+                - mode_calcul
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nom:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        dateRendu:
+            type: date
+            nullable: true
+            column: date_rendu
+        dateFinCorrection:
+            type: date
+            nullable: true
+            column: date_fin_correction
+        nombreEval:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: nombre_eval
+        anonymat:
+            type: binary
+            nullable: true
+        isCalibration:
+            type: binary
+            nullable: true
+            column: is_calibration
+        isCalculBiais:
+            type: binary
+            nullable: true
+            column: is_calcul_biais
+        autoevaluation:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        modeEval:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: mode_eval
+        modeAttribution:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: mode_attribution
+        travailIndividuel:
+            type: binary
+            nullable: true
+            column: travail_individuel
+        correctionIndividuelle:
+            type: binary
+            nullable: true
+            column: correction_individuelle
+    manyToOne:
+        enseignant:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                enseignant_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        cours:
+            targetEntity: Cours
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cours_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        modeCalcul:
+            targetEntity: ModeCalcul
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                mode_calcul:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

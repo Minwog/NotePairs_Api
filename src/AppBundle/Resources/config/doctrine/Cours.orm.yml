@@ -1,0 +1,39 @@
+AppBundle\Entity\Cours:
+    type: entity
+    table: cours
+    repositoryClass: AppBundle\Repository\CoursRepository
+    indexes:
+        categorie_id:
+            columns:
+                - categorie_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nom:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        restreint:
+            type: binary
+            nullable: true
+    manyToOne:
+        categorie:
+            targetEntity: Categorie
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                categorie_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

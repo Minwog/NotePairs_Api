@@ -1,0 +1,59 @@
+AppBundle\Entity\CorrigeCritere:
+    type: entity
+    table: corrige_critere
+    repositoryClass: AppBundle\Repository\CorrigeCritereRepository
+    indexes:
+        critere_id:
+            columns:
+                - critere_id
+        correction_id:
+            columns:
+                - correction_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        note:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        precision:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        commentaire:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+    manyToOne:
+        critere:
+            targetEntity: Critere
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                critere_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        correction:
+            targetEntity: Correction
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                correction_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
