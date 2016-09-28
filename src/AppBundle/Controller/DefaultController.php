@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends FOSRestController
 {
-    /**
-     * @Route("/demo", name="homepage")
-     */
 
         public function indexAction()
     {

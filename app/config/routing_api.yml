@@ -5,3 +5,9 @@ main:
 cours:
     type: rest
     resource: 'AppBundle\Controller\CoursController'
+# A modifier suivant les bundles que l'on crééra.
+
+users:
+    type: rest
+    resource: 'AppBundle\Controller\UserController'
+

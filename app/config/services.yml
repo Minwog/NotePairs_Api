@@ -5,10 +5,9 @@ parameters:
 #    parameter_name: value
 
 services:
-    crv.doctrine_entity_repository.blog_post:
+    crv.doctrine_entity_repository.user:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine", getRepository]
         arguments:
-            - AppBundle\Entity\
+            - AppBundle\Entity\User
 
-#un service a créer par entity. Pour l'instant on n'a pas créé d'entity, donc bon.
