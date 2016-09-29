@@ -4,10 +4,4 @@
 parameters:
 #    parameter_name: value
 
-services:
-    crv.doctrine_entity_repository.user:
-        class: Doctrine\ORM\EntityRepository
-        factory: ["@doctrine", getRepository]
-        arguments:
-            - AppBundle\Entity\User
 

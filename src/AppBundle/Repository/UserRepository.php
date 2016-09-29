@@ -10,13 +10,6 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findAllQuery()
-    {
-        return $this->_em->createQuery(
-            "
-            SELECT *
-            FROM AppBundle:User
-            "
-        );
-    }
+
+
 }
