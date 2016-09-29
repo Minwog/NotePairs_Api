@@ -18,7 +18,7 @@ class Cours
     private $nom;
 
     /**
-     * @var binary
+     * @var boolean
      */
     private $restreint;
 
@@ -65,7 +65,7 @@ class Cours
     /**
      * Set restreint
      *
-     * @param binary $restreint
+     * @param boolean $restreint
      *
      * @return Cours
      */
@@ -79,7 +79,7 @@ class Cours
     /**
      * Get restreint
      *
-     * @return binary
+     * @return boolean
      */
     public function getRestreint()
     {
