@@ -77,10 +77,6 @@ AppBundle\Entity\Evaluation:
             type: boolean
             nullable: true
             column: travail_individuel
-        isVisible:
-            type: boolean
-            nullable: true
-            column: is_visible
         correctionIndividuelle:
             type: boolean
             nullable: true

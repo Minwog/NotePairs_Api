@@ -1,7 +1,7 @@
 AppBundle\Entity\Correction:
     type: entity
     table: correction
-    repositoryClass: AppBundle\Repository\CorrectionRepository 
+    repositoryClass: AppBundle\Repository\CorrectionRepository
     indexes:
         user_id:
             columns:

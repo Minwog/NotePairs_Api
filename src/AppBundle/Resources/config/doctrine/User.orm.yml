@@ -2,6 +2,7 @@ AppBundle\Entity\User:
     type: entity
     table: user
     repositoryClass: AppBundle\Repository\UserRepository
+
     indexes:
         role_id:
             columns:

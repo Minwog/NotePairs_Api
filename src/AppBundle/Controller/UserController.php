@@ -23,9 +23,8 @@ class UserController extends FOSRestController
 {
 
     /**
-     * Gets a collection of BlogPosts
+     * Gets a collection of users
      *
-     * @return array
      *
      * @ApiDoc(
      *     output="AppBundle\Entity\User",
@@ -42,20 +41,38 @@ class UserController extends FOSRestController
             ->getRepository('AppBundle:User')
             ->findAll();
 
-        /*$temp='[';
-
-        foreach ($users as $user) {
-            $temp.='{id:'.$user->getId().'}';
-        }
-        $temp.=']';*/
-
         $temp = $this->get('serializer')->serialize($users, 'json');
-
-
 
        return new Response($temp);
 
 
     }
+
+    /**
+     * Gets a user
+     *
+     * @param integer $id
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *         200 = "Returned when successful",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+
+    public function getAction($id)
+    {
+        $user=$this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->find($id);
+
+        $temp=$this->get('serializer')->serialize($user,'json');
+        return new Response($temp);
+    }
+
+
 
 }

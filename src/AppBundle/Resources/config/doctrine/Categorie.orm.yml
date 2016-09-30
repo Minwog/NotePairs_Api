@@ -1,5 +1,4 @@
 AppBundle\Entity\Categorie:
-
     type: entity
     table: categorie
     repositoryClass: AppBundle\Repository\CategorieRepository
