@@ -2,10 +2,15 @@ main:
     type: rest
     resource: 'AppBundle\Controller\DefaultController'
 
+# A modifier suivant les bundles que l'on crééra.
+
 cours:
     type: rest
     resource: 'AppBundle\Controller\CoursController'
-# A modifier suivant les bundles que l'on crééra.
+
+groupe:
+    type: rest
+    resource: 'AppBundle\Controller\GroupeController'
 
 users:
     type: rest

@@ -43,14 +43,14 @@ AppBundle\Entity\Evaluation:
                 unsigned: false
             column: nombre_eval
         anonymat:
-            type: binary
+            type: boolean
             nullable: true
         isCalibration:
-            type: binary
+            type: boolean
             nullable: true
             column: is_calibration
         isCalculBiais:
-            type: binary
+            type: boolean
             nullable: true
             column: is_calcul_biais
         autoevaluation:
@@ -74,11 +74,15 @@ AppBundle\Entity\Evaluation:
                 fixed: false
             column: mode_attribution
         travailIndividuel:
-            type: binary
+            type: boolean
             nullable: true
             column: travail_individuel
+        isVisible:
+            type: boolean
+            nullable: true
+            column: is_visible
         correctionIndividuelle:
-            type: binary
+            type: boolean
             nullable: true
             column: correction_individuelle
     manyToOne:

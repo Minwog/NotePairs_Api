@@ -23,7 +23,7 @@ AppBundle\Entity\Cours:
             options:
                 fixed: false
         restreint:
-            type: binary
+            type: boolean
             nullable: true
     manyToOne:
         categorie:

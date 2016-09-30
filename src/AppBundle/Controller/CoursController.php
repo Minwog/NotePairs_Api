@@ -39,6 +39,7 @@ class CoursController extends FOSRestController
             ->getRepository('AppBundle:Cours')
             ->findAll();
         $temp = $this->get('serializer')->serialize($cours, 'json');
+
         return new Response($temp);
     }
 

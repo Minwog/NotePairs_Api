@@ -33,17 +33,17 @@ class Evaluation
     private $nombreEval;
 
     /**
-     * @var binary
+     * @var boolean
      */
     private $anonymat;
 
     /**
-     * @var binary
+     * @var boolean
      */
     private $isCalibration;
 
     /**
-     * @var binary
+     * @var boolean
      */
     private $isCalculBiais;
 
@@ -63,12 +63,17 @@ class Evaluation
     private $modeAttribution;
 
     /**
-     * @var binary
+     * @var boolean
      */
     private $travailIndividuel;
 
     /**
-     * @var binary
+     * @var boolean
+     */
+    private $isVisible;
+
+    /**
+     * @var boolean
      */
     private $correctionIndividuelle;
 
@@ -197,7 +202,7 @@ class Evaluation
     /**
      * Set anonymat
      *
-     * @param binary $anonymat
+     * @param boolean $anonymat
      *
      * @return Evaluation
      */
@@ -211,7 +216,7 @@ class Evaluation
     /**
      * Get anonymat
      *
-     * @return binary
+     * @return boolean
      */
     public function getAnonymat()
     {
@@ -221,7 +226,7 @@ class Evaluation
     /**
      * Set isCalibration
      *
-     * @param binary $isCalibration
+     * @param boolean $isCalibration
      *
      * @return Evaluation
      */
@@ -235,7 +240,7 @@ class Evaluation
     /**
      * Get isCalibration
      *
-     * @return binary
+     * @return boolean
      */
     public function getIsCalibration()
     {
@@ -245,7 +250,7 @@ class Evaluation
     /**
      * Set isCalculBiais
      *
-     * @param binary $isCalculBiais
+     * @param boolean $isCalculBiais
      *
      * @return Evaluation
      */
@@ -259,7 +264,7 @@ class Evaluation
     /**
      * Get isCalculBiais
      *
-     * @return binary
+     * @return boolean
      */
     public function getIsCalculBiais()
     {
@@ -341,7 +346,7 @@ class Evaluation
     /**
      * Set travailIndividuel
      *
-     * @param binary $travailIndividuel
+     * @param boolean $travailIndividuel
      *
      * @return Evaluation
      */
@@ -355,7 +360,7 @@ class Evaluation
     /**
      * Get travailIndividuel
      *
-     * @return binary
+     * @return boolean
      */
     public function getTravailIndividuel()
     {
@@ -363,9 +368,33 @@ class Evaluation
     }
 
     /**
+     * Set isVisible
+     *
+     * @param boolean $isVisible
+     *
+     * @return Evaluation
+     */
+    public function setIsVisible($isVisible)
+    {
+        $this->isVisible = $isVisible;
+
+        return $this;
+    }
+
+    /**
+     * Get isVisible
+     *
+     * @return boolean
+     */
+    public function getIsVisible()
+    {
+        return $this->isVisible;
+    }
+
+    /**
      * Set correctionIndividuelle
      *
-     * @param binary $correctionIndividuelle
+     * @param boolean $correctionIndividuelle
      *
      * @return Evaluation
      */
@@ -379,7 +408,7 @@ class Evaluation
     /**
      * Get correctionIndividuelle
      *
-     * @return binary
+     * @return boolean
      */
     public function getCorrectionIndividuelle()
     {
