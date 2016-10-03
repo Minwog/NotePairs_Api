@@ -54,7 +54,10 @@ class User
 
     /**
      * @var \AppBundle\Entity\Role
+     *
      */
+    /*@var integer */
+
     private $role;
 
 
@@ -278,6 +281,9 @@ class User
      * Get role
      *
      * @return \AppBundle\Entity\Role
+     */
+    /*
+     * @return integer
      */
     public function getRole()
     {
