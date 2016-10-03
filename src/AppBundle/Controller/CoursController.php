@@ -106,7 +106,7 @@ class CoursController extends FOSRestController
      *
      * @param Request $request
      * @return mixed
-     * @Method("POST"})
+     * @Method("POST")
      *
      * @ApiDoc(
      *     output="AppBundle\Entity\Cours",
@@ -119,7 +119,7 @@ class CoursController extends FOSRestController
      * POST Route annotation.
      * @Post("/cours/add")
      */
-/*
+
     public function postAction(Request $request){
         $data=$request->request->all();
 
@@ -135,6 +135,6 @@ class CoursController extends FOSRestController
         return new Response('{status:'. 200 .',id:'. $cours->getId().'}');
 
 
-    }*/
+    }
 
 }
