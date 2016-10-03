@@ -47,6 +47,33 @@ class CoursController extends FOSRestController
         return new Response($temp);
     }
 
+    /** Gets a users by Categorie
+     * @param integer $id
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Cours",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     */
+
+    /**
+     * GET Route annotation.
+     * @Get("/cours/categorie/{id}")
+     */
+
+    public function findByCategorieAction($id){
+        $categorie=$this->getDoctrine()->getRepository('AppBundle:Categorie')->find($id);
+        $cours=$this->getDoctrine()->getRepository('AppBundle:Cours')->findBy(array('categorie'=>$categorie));
+
+        $temp = $this->get('serializer')->serialize($cours, 'json');
+        return new Response($temp);
+
+    }
+
     /**
      * Get one Cours by Id
      *
