@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Post;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Class CoursController
@@ -117,7 +119,7 @@ class CoursController extends FOSRestController
      * POST Route annotation.
      * @Post("/cours/add")
      */
-
+/*
     public function postAction(Request $request){
         $data=$request->request->all();
 
@@ -133,6 +135,6 @@ class CoursController extends FOSRestController
         return new Response('{status:'. 200 .',id:'. $cours->getId().'}');
 
 
-    }
+    }*/
 
 }
