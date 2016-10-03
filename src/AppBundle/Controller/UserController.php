@@ -131,11 +131,46 @@ class UserController extends FOSRestController
      */
 
     public function findByRoleAction($id){
-        $role=$this->getDoctrine()->getRepository('AppBundle:Role')->find($id);
-        $user=$this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('role'=>$role));
-        var_dump($user);
+        $role = $this->getDoctrine()->getRepository('AppBundle:Role')->find($id);
+        $temp = $this->get('serializer')->serialize($role, 'json');
+        return new Response($temp);
 
     }
+
+    /** Gets a users by RoleId
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     */
+
+    /**
+     * GET Route annotation.
+     * @Get("/users/role/a/{id}")
+     */
+
+    public function getRoleAction($id){
+        $role = $this->getDoctrine()
+            ->getRepository('AppBundle:Role')
+            ->find($id);
+        $temp1 = $this->get('serializer')->serialize($role, 'json')."";
+
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findBy(array('role' => $role));
+
+        $temp = $this->get('serializer')->serialize($user, 'json');
+        return new Response($temp);
+
+    }
+
 
     /** Create a user
      * @param Request $request
