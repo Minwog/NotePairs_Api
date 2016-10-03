@@ -131,8 +131,14 @@ class UserController extends FOSRestController
      */
 
     public function findByRoleAction($id){
-        $role = $this->getDoctrine()->getRepository('AppBundle:Role')->find($id);
-        $temp = $this->get('serializer')->serialize($role, 'json');
+        $role = $this->getDoctrine()
+            ->getRepository('AppBundle:Role')
+            ->find($id);
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findBy(array('role' => $role));
+
+        $temp = $this->get('serializer')->serialize($user, 'json');
         return new Response($temp);
 
     }
@@ -160,8 +166,6 @@ class UserController extends FOSRestController
         $role = $this->getDoctrine()
             ->getRepository('AppBundle:Role')
             ->find($id);
-        $temp1 = $this->get('serializer')->serialize($role, 'json')."";
-
         $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->findBy(array('role' => $role));
