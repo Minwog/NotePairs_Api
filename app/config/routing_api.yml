@@ -16,3 +16,6 @@ users:
     type: rest
     resource: 'AppBundle\Controller\UserController'
 
+userHasCours:
+    type: rest
+    resource: 'AppBundle\Controller\UserHasCoursController'
