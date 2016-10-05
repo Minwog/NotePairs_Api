@@ -58,9 +58,7 @@ class CoursController extends FOSRestController
      *     404= "Returned when not found"
      *     }
      *     )
-     */
-
-    /**
+     *
      * GET Route annotation.
      * @Get("/cours/categorie/{id}")
      */
