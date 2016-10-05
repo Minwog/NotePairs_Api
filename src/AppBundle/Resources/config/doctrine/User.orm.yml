@@ -54,15 +54,11 @@ AppBundle\Entity\User:
             options:
                 fixed: false
         fiabilite:
-            type: decimal
+            type: float
             nullable: true
-            precision: 10
-            scale: 0
         moyenne:
-            type: decimal
+            type: float
             nullable: true
-            precision: 10
-            scale: 0
     manyToOne:
         role:
             targetEntity: Role

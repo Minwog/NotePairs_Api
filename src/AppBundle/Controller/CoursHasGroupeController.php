@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
+use AppBundle\Entity\CoursHasGroupe;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserHasCours;
 use AppBundle\Entity\Cours;
@@ -21,20 +22,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
 /**
- * Class UserController
+ * Class CoursController
  * @package AppBundle\Controller
-*/
+ */
 
-class UserHasCoursController extends FOSRestController
+class CoursHasGroupeController extends FOSRestController
 {
 
-    /** Find Cours of a user
+    /** Find Groupes of a Cours
      * @param integer $id
-     *
      * @return mixed
      *
      * @ApiDoc(
-     *     output="AppBundle\Entity\User",
+     *     output="AppBundle\Entity\Cours",
      *     statusCodes={
      *     200= "Returned when successful",
      *     404= "Returned when not found"
@@ -42,55 +42,51 @@ class UserHasCoursController extends FOSRestController
      *     )
      *
      * @Method("GET")
-     *
+     * @Get("/cours/{id}/groupes/all")
      */
-    /**
-     * GET Route annotation.
-     * @Get("/users/{id}/cours/all")
+
+    public function getGroupesAction($id)
+    {
+
+        $groupe = $this->getDoctrine()->getRepository('AppBundle:CoursHasGroupe')->findGroupeByCours($id)->getResult();
+
+        $temp = $this->get('serializer')->serialize($groupe, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Find Cours of a Groupe
+     * @param integer $id
+     * @return mixed
+     *
+     * @Method("GET")
+     * @Get("/groupe/{id}/cours/all")
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Cours",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
      */
 
     public function getCoursAction($id)
     {
-
-        $cours = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findCoursByUser($id)->getResult();
+        $cours = $this->getDoctrine()->getRepository('AppBundle:CoursHasGroupe')->findCoursByGroupe($id)->getResult();
 
         $temp = $this->get('serializer')->serialize($cours, 'json');
         return new Response($temp);
-
     }
 
-    /** Find User of a Cours
-     * @param integer $id
-     * @return mixed
-     *
-     * @Method("GET")
-     * @Get("/cours/{id}/users/all")
-     *
-     * @ApiDoc(
-     *     output="AppBundle\Entity\User",
-     *     statusCodes={
-     *     200= "Returned when successful",
-     *     404= "Returned when not found"
-     *     }
-     *     )
-     */
-
-    public function getUserAction($id)
-    {
-        $user = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findUserByCours($id)->getResult();
-
-        $temp = $this->get('serializer')->serialize($user, 'json');
-        return new Response($temp);
-    }
-
-    /** Add Cours to a user
+    /** Add Groupe to a Cours
      * @param integer $id
      * @param Request $request
      *
      * @return mixed
      *
      * @ApiDoc(
-     *     output="AppBundle\Entity\User",
+     *     output="AppBundle\Entity\Cours",
      *     statusCodes={
      *     200= "Returned when successful",
      *     404= "Returned when not found"
@@ -102,23 +98,23 @@ class UserHasCoursController extends FOSRestController
      */
     /**
      * POST Route annotation.
-     * @Post("/users/{id}/cours/add")
+     * @Post("/cours/{id}/groupe/add")
      */
 
-    public function addCoursToUserAction($id,Request $request){
+    public function addGroupeToCoursAction($id,Request $request){
         $data=$request->request->all();
-        $user=$this->getDoctrine()->getRepository('AppBundle:User')->find($id);
+        $cours=$this->getDoctrine()->getRepository('AppBundle:Cours')->find($id);
         $em = $this->getDoctrine()->getManager();
         foreach ($data as $d) {
-            $newCours= $this->getDoctrine()->getRepository('AppBundle:Cours')->find($d["id"]);
-            $userHasCours=new UserHasCours();
-            $userHasCours->setCours($newCours);
-            $userHasCours->setUser($user);
-            $em->persist($userHasCours);
+            $newGroupe= $this->getDoctrine()->getRepository('AppBundle:Groupe')->find($d["id"]);
+            $coursHasGroupe=new CoursHasGroupe();
+            $coursHasGroupe->setGroupe($newGroupe);
+            $coursHasGroupe->setCours($cours);
+            $em->persist($coursHasGroupe);
         }
 
-       $em->flush();
+        $em->flush();
 
-        return new Response('new Cours assigned to user with id '.$id);
+        return new Response('new Groupe assigned to Cours with id '.$id);
     }
 }

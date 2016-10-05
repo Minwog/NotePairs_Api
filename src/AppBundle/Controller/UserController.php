@@ -170,17 +170,30 @@ class UserController extends FOSRestController
 
     public function postAction(Request $request){
         $data=$request->request->all();
+        $user = new User();
 
-        $user=new User();
-        $role=$this->getDoctrine()->getRepository('AppBundle:Role')->find($data['role_id']);
+        if(isset($data['role_id'])) {
 
+            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->find($data['role_id']);
+            $user->setRole($role);
+        }
 
-        $user->setNom($data['nom']);
-        $user->setPrenom($data['prenom']);
-        $user->setEmail($data['email']);
-        $user->setUsername($data['username']);
-        $user->setImage($data['image']);
-        $user->setRole($role);
+        if(isset($data["nom"])){
+            $user->setNom($data['nom']);
+        }
+        if(isset($data["prenom"])){
+            $user->setPrenom($data['prenom']);
+        }
+        if(isset($data["email"])){
+            $user->setEmail($data['email']);
+        }
+        if(isset($data["username"])){
+            $user->setUsername($data['username']);
+        }
+        if(isset($data["image"])){
+            $user->setImage($data['image']);
+        }
+        $user->setFiabilite(1);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
@@ -220,6 +233,95 @@ class UserController extends FOSRestController
         $em->flush();
 
         return new Response('HTTP_NO_CONTENT');
+    }
+
+
+    /** Update general information of a user
+     * @param integer $id
+     * @param Request $request
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     */
+
+    public function updateAction($id,Request $request){
+
+        $data=$request->request->all();
+
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
+        if ($user === null) {
+            return new Response('HTTP_NOT_FOUND');
+        }
+
+        if(isset($data["nom"])){
+            $user->setNom($data['nom']);
+        }
+        if(isset($data["prenom"])){
+            $user->setPrenom($data['prenom']);
+        }
+        if(isset($data["email"])){
+            $user->setEmail($data['email']);
+        }
+        if(isset($data["username"])){
+            $user->setUsername($data['username']);
+        }
+        if(isset($data["image"])){
+            $user->setImage($data['image']);
+        }
+        if(isset($data["moyenne"])){
+            $user->setMoyenne($data['moyenne']);
+        }
+        if(isset($data["fiabilite"])){
+            $user->setFiabilite($data['fiabilite']);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $user->getId().'}');
+
+    }
+
+    /** Update fiabilite of a user
+     * @param integer $id
+     * @param Request $request
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * /**
+     * POST Route annotation.
+     * @Post("/users/{id}/fiabilite")
+     */
+
+
+
+    public function updateFiabiliteAction($id, Request $request){
+        $data=$request->request->all();
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
+
+        $user->setFiabilite($data['fiabilite']);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return new Response('fiabilite updated for user '.$id);
+
     }
 
 

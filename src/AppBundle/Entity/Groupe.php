@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Groupe
@@ -16,6 +17,11 @@ class Groupe
      * @var string
      */
     private $nom;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $groupe;
 
 
     /**
@@ -50,5 +56,15 @@ class Groupe
     public function getNom()
     {
         return $this->nom;
+    }
+
+    /**
+     * Get Groupes
+     *
+     * @return ArrayCollection
+     */
+
+    public function getGroupes(){
+        return $this->groupe;
     }
 }

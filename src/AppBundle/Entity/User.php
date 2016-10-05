@@ -43,12 +43,12 @@ class User
     private $image;
 
     /**
-     * @var string
+     * @var float
      */
     private $fiabilite;
 
     /**
-     * @var string
+     * @var float
      */
     private $moyenne;
 
@@ -218,7 +218,7 @@ class User
     /**
      * Set fiabilite
      *
-     * @param string $fiabilite
+     * @param float $fiabilite
      *
      * @return User
      */
@@ -232,7 +232,7 @@ class User
     /**
      * Get fiabilite
      *
-     * @return string
+     * @return float
      */
     public function getFiabilite()
     {
@@ -242,7 +242,7 @@ class User
     /**
      * Set moyenne
      *
-     * @param string $moyenne
+     * @param float $moyenne
      *
      * @return User
      */
@@ -256,7 +256,7 @@ class User
     /**
      * Get moyenne
      *
-     * @return string
+     * @return float
      */
     public function getMoyenne()
     {

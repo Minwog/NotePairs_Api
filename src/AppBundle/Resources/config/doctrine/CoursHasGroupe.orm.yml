@@ -1,0 +1,42 @@
+AppBundle\Entity\CoursHasGroupe:
+    type: entity
+    table: cours_has_groupe
+    repositoryClass: AppBundle\Repository\CoursHasGroupeRepository
+    indexes:
+        cours_id:
+            columns:
+                - cours_id
+        groupe_id:
+            columns:
+                - groupe_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        cours:
+            targetEntity: Cours
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        groupe:
+            targetEntity: Groupe
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                evaluation_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

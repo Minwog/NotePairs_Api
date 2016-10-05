@@ -47,7 +47,7 @@ class CoursController extends FOSRestController
         return new Response($temp);
     }
 
-    /** Gets a users by Categorie
+    /** Gets a Cours by Categorie
      * @param integer $id
      * @return mixed
      *
@@ -58,9 +58,7 @@ class CoursController extends FOSRestController
      *     404= "Returned when not found"
      *     }
      *     )
-     */
-
-    /**
+     *
      * GET Route annotation.
      * @Get("/cours/categorie/{id}")
      */
@@ -94,9 +92,6 @@ class CoursController extends FOSRestController
     {
         $cours=$this->getDoctrine()->getRepository('AppBundle:Cours')->find($id);
         $temp = $this->get('serializer')->serialize($cours, 'json');
-        if ($temp === null) {
-            return new View(null, Response::HTTP_NOT_FOUND);
-        }
 
         return new Response($temp);
     }
@@ -159,9 +154,75 @@ class CoursController extends FOSRestController
         $em->persist($cours);
         $em->flush();
 
-        return new Response('{status:'. 200 .',id:'. $cours->getId().'}');
-
-
+        return new Response($this->get('serializer')->serialize($cours, 'json'));
     }
 
+    /** Update a Cours
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Cours",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET","POST"})
+     * @Post("/cours/update/{id}")
+     */
+
+    public function updateAction(Request $request, $id){
+        $data=$request->request->all();
+
+        $cours = $this->getDoctrine()->getRepository('AppBundle:Cours')
+            ->find($id);
+
+        if(isset($data['nom'])){
+            $cours->setNom($data['nom']);
+        }
+
+        if(isset($data['categorie'])) {
+            $categorie = $this->getDoctrine()->getRepository('AppBundle:Categorie')->find($data['categorie']);
+            $cours->setCategorie($categorie);
+        }
+
+        if(isset($data['restreint'])){
+            $cours->setrestreint($data['restreint']);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($cours);
+        $em->flush();
+
+        return new Response($this->get('serializer')->serialize($cours, 'json'));
+    }
+
+    /** Delete a Cours
+     * @param integer $id
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     */
+
+    public function deleteAction($id){
+        $cours = $this->getDoctrine()->getRepository('AppBundle:Cours')->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($cours);
+        $em->flush();
+
+        return new Response('HTTP_NO_CONTENT');
+    }
+
+
+/**/
 }

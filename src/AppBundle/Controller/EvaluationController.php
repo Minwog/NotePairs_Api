@@ -202,7 +202,7 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET,"POST"})
+     * @Method({"GET","POST"})
      *
      */
 
