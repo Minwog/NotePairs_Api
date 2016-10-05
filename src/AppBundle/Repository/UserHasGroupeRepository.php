@@ -10,4 +10,27 @@ namespace AppBundle\Repository;
  */
 class UserHasGroupeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findUserHasGroupeByUser($id)
+    {
+        return $this->_em->createQuery(
+            "
+            SELECT DISTINCT d
+            FROM AppBundle:UserHasGroupe h
+            JOIN h.user u
+            JOIN AppBundle:Cours d
+            WHERE u.id=$id AND h.groupe=d"
+        );
+    }
+
+    public function findUserByGroupe($id)
+    {
+        return $this->_em->createQuery(
+            "
+            SELECT DISTINCT d
+            FROM AppBundle:UserHasGroupe h
+            JOIN h.groupe g
+            JOIN AppBundle:User d
+            WHERE g.id=$id AND h.user=d"
+        );
+    }
 }

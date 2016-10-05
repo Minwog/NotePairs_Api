@@ -36,4 +36,10 @@ AppBundle\Entity\Cours:
                 categorie_id:
                     referencedColumnName: id
             orphanRemoval: false
+
+      manyToMany:
+        groupe:
+          targetEntity: Groupe
+          mappedBy: Groupe
     lifecycleCallbacks: {  }
+
