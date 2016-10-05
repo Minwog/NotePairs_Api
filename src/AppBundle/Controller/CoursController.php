@@ -222,5 +222,7 @@ class CoursController extends FOSRestController
 
         return new Response('HTTP_NO_CONTENT');
     }
+
+
 /**/
 }
