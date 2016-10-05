@@ -19,3 +19,7 @@ users:
 userHasCours:
     type: rest
     resource: 'AppBundle\Controller\UserHasCoursController'
+
+evaluations:
+    type: rest
+    resource: 'AppBundle\Controller\EvaluationController'

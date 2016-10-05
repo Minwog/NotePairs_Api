@@ -10,15 +10,26 @@ namespace AppBundle\Repository;
  */
 class UserHasCoursRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findUserHasCoursByUser($id)
+    public function findCoursByUser($id)
+    {
+        return $this->_em->createQuery(
+            "SELECT DISTINCT lesCours
+            FROM AppBundle:UserHasCours h
+            JOIN h.user user
+            JOIN AppBundle:Cours lesCours
+            WHERE user.id=$id AND h.cours=lesCours"
+        );
+    }
+
+    public function findUserByCours($id)
     {
         return $this->_em->createQuery(
             "
-            SELECT DISTINCT d
+            SELECT DISTINCT u
             FROM AppBundle:UserHasCours h
-            JOIN h.user u
-            JOIN AppBundle:Cours d
-            WHERE u.id=$id AND h.cours=d"
+            JOIN h.cours d
+            JOIN AppBundle:User u
+            WHERE d.id=$id AND h.user=u"
         );
     }
 }
