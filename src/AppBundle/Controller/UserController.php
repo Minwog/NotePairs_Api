@@ -4,7 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserHasCours;
 use AppBundle\Entity\Role;
+use AppBundle\Entity\Cours;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Repository\RoleRepository;
 use FOS\RestBundle\Controller\Annotations;
@@ -127,15 +129,22 @@ class UserController extends FOSRestController
 
     /**
      * GET Route annotation.
-     * @Get("/users/role/{id}")
+     * @Get("/userbyrole/{id}")
      */
 
-    public function findByRoleAction($id){
-        $role=$this->getDoctrine()->getRepository('AppBundle:Role')->find($id);
-        $user=$this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('role'=>$role));
-        var_dump($user);
+    public function getRoleAction($id){
+        $role = $this->getDoctrine()
+            ->getRepository('AppBundle:Role')
+            ->find($id);
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findBy(array('role' => $role));
+
+        $temp = $this->get('serializer')->serialize($user, 'json');
+        return new Response($temp);
 
     }
+
 
     /** Create a user
      * @param Request $request
@@ -165,6 +174,7 @@ class UserController extends FOSRestController
         $user=new User();
         $role=$this->getDoctrine()->getRepository('AppBundle:Role')->find($data['role_id']);
 
+
         $user->setNom($data['nom']);
         $user->setPrenom($data['prenom']);
         $user->setEmail($data['email']);
@@ -182,8 +192,7 @@ class UserController extends FOSRestController
     }
 
 
-    /** Update a user
-     * @param Request $request
+    /** Delete a user
      * @param integer $id
      *
      * @return mixed
@@ -196,14 +205,25 @@ class UserController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET,"POST"})
      *
      */
 
-    /**
-     * POST Route annotation.
-     * @Post("/users/update/{id}")
-     */
+    public function deleteAction($id){
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
+
+        if ($user === null) {
+            return new Response('HTTP_NOT_FOUND');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        return new Response('HTTP_NO_CONTENT');
+    }
+
+
+
 
 
 
