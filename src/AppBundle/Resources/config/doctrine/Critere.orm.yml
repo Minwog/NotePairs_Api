@@ -49,7 +49,7 @@ AppBundle\Entity\Critere:
             orphanRemoval: false
         section:
             targetEntity: Section
-            cascade: {  }
+            cascade: { "remove" }
             fetch: LAZY
             mappedBy: null
             inversedBy: null

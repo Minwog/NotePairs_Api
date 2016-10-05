@@ -55,7 +55,7 @@ AppBundle\Entity\Section:
             orphanRemoval: false
         evaluation:
             targetEntity: Evaluation
-            cascade: {  }
+            cascade: { "remove" }
             fetch: LAZY
             mappedBy: null
             inversedBy: null

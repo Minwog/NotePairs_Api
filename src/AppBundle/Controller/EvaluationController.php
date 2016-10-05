@@ -11,10 +11,7 @@ namespace AppBundle\Controller;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Evaluation;
 use AppBundle\Entity\Section;
-/*use AppBundle\Entity\ModeCalcul;
-use AppBundle\Entity\User;
-use AppBundle\Entity\Cours;
-use AppBundle\Entity\Categorie;*/
+use AppBundle\Entity\Critere;
 use AppBundle\Repository\EvaluationRepository;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -30,7 +27,7 @@ use \Date;
 
 
 /**
- * Class UserController
+ * Class EvaluationController
  * @package AppBundle\Controller
  *  @RouteResource("evaluation")
  */
@@ -274,8 +271,7 @@ class EvaluationController extends FOSRestController
 
     }
 
-    /** Find devoir à rendre
-     * @param Request $request
+    /** Delete une evaluation
      * @param integer $id
      *
      * @return mixed
@@ -288,79 +284,53 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET"})
-     *
      */
 
-    /**
-     *GET Route annotation.
-     * @Get("/devoirs_a_rendre")
-     */
+    /*public function deleteAction($id){
 
-    public function getDevoirsARendreAction()
-    {
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();
+        //$qb = $em->createQueryBuilder();
 
-        $today= \Date("now");
+        $evaluation = $this->getDoctrine()->getRepository('AppBundle:Evaluation')->find($id);
 
-        $qb->select('e')
-            ->from('AppBundle:Evaluation', 'e')
-            ->where('e.dateRendu <='.$today)
-            ->orderBy('e.dateRendu', 'ASC');
+        if ($evaluation === null) {
+            return new Response('HTTP_NOT_FOUND');
+        }
 
-        $evaluations=$qb->getQuery()->getResult();
+        /*$sections=
+            $qb->select('s')
+                ->from('AppBundle:Section','s')
+                ->where('s.evaluation ='.$id)
+                ->getQuery()
+                ->getResult();
 
-        $temp = $this->get('serializer')->serialize($evaluations, 'json');
+        foreach((array)$sections as $s)
+        {
+            $criteres=
+                $qb->select('c')
+                    ->from('AppBundle:Critere','c')
+                    ->where('c.section ='.$s->getId())
+                    ->getQuery()
+                    ->getResult();
+        }
 
-        return new Response($temp);
-    }
+        $userHasEvaluation=
+            $qb->select('u')
+                ->from('AppBundle:UserHasEvaluation','u')
+                ->where('u.evaluation ='.$id)
+                ->getQuery()
+                ->getResult();
 
-    /** Find evaluations en cours
-     * @param Request $request
-     * @param integer $id
-     *
-     * @return mixed
-     *
-     * @ApiDoc(
-     *     output="AppBundle\Entity\Evaluation",
-     *     statusCodes={
-     *     200= "Returned when successful",
-     *     404= "Returned when not found"
-     *     }
-     *     )
-     *
-     * @Method({"GET"})
-     *
-     */
+        $em->remove($sections);
+        $em->remove($evaluation);
+        //$em->remove($userHasEvaluation);
+        //$em->remove($criteres);
+        $em->flush();
 
-    /**
-     *GET Route annotation.
-     * @Get("/evaluations_en_cours")
-     */
-
-    public function getEvaluationsAFaireAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();
-
-        $today= \Date("now");
-
-        $qb->select('e')
-            ->from('AppBundle:Evaluation', 'e')
-            ->where('e.dateRendu>='.$today.' AND e.dateFinCorrection <='.$today)
-            ->orderBy('e.dateFinCorrection', 'ASC');
-
-        $evaluations=$qb->getQuery()->getResult();
-
-        $temp = $this->get('serializer')->serialize($evaluations, 'json');
-
-        return new Response($temp);
-
-    }
+        return new Response('HTTP_NO_CONTENT');
+    }*/
 
     /** Find les sections de l'evaluation
-     * @param Request $request
      * @param integer $id
      *
      * @return mixed
@@ -394,6 +364,39 @@ class EvaluationController extends FOSRestController
 
     }
 
+    /** Find une section de l'evaluation
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET"})
+     *
+     */
+    /**
+     *GET Route annotation.
+     * @Get("/evaluations/section/{id}")
+     */
+
+    public function getSectionAction($id){
+
+        $section = $this->getDoctrine()
+            ->getRepository('AppBundle:Evaluation')
+            ->find($id);
+
+        $temp = $this->get('serializer')->serialize($section, 'json');
+        return new Response($temp);
+
+    }
+
     /** Add sections a l'evaluation
      * @param Request $request
      * @param integer $id
@@ -412,9 +415,417 @@ class EvaluationController extends FOSRestController
      *
      */
 
-    public function addSectionsAction(Request $request,$id){
+    public function postSectionAction(Request $request, $id){
 
+        $evaluation= $this->getDoctrine()
+            ->getRepository('AppBundle:Evaluation')
+            ->find($id);
 
+        $data=$request->request->all();
+
+        if(isset($data['type_rendu'])) {
+            $parametre = $this->getDoctrine()
+                ->getRepository('AppBundle:Parametre')
+                ->find($data['type_rendu']);
+        } else {
+            $parametre = $this->getDoctrine()
+                ->getRepository('AppBundle:Parametre')
+                ->find(1);
+        }
+
+        $section=new Section();
+
+        $section->setEvaluation($evaluation);
+        if(isset($data['titre'])) {
+            $section->setTitre($data['titre']);
+        }else {
+            $section->setTitre('');
+        }
+        if(isset($data['enonce'])) {
+            $section->setEnonce($data['enonce']);
+        }else {
+            $section->setEnonce('');
+        }
+        if(isset($data['description'])) {
+            $section->setDescription($data['description']);
+        }else {
+            $section->setDescription('');
+        }
+
+        $section->setTypeRendu($parametre);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($section);
+        $em->flush();
+
+        if(isset($data['ordre'])) {
+            $section->setOrdre($data['ordre']);
+        }else {
+            $section->setOrdre($section->getId());
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($section);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $section->getId().'}');
+
+    }
+
+    /** Update sections
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET","POST"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/evaluations/section/{id}/update")
+     */
+
+    /**
+     *POST Route annotation.
+     * @Post("/evaluations/section/{id}/update")
+     */
+
+    public function updateSectionAction(Request $request, $id){
+
+        $data=$request->request->all();
+
+        $section= $this->getDoctrine()
+            ->getRepository('AppBundle:Section')
+            ->find($id);
+
+        if(isset($data['type_rendu'])) {
+            $parametre = $this->getDoctrine()
+                ->getRepository('AppBundle:Parametre')
+                ->find($data['type_rendu']);
+            $section->setTypeRendu($parametre);
+        }
+
+        if(isset($data['titre'])) {
+            $section->setTitre($data['titre']);
+        }
+
+        if(isset($data['enonce'])) {
+            $section->setEnonce($data['enonce']);
+        }
+
+        if(isset($data['description'])) {
+            $section->setDescription($data['description']);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($section);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $section->getId().'}');
+
+    }
+
+    /** Update ordre de la section
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET","POST"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/evaluations/section/{id}/update_ordre")
+     */
+
+    /**
+     *POST Route annotation.
+     * @Post("/evaluations/section/{id}/update_ordre({ordre})")
+     */
+
+    public function updateOrdreSectionAction($ordre, $id){
+
+        $section= $this->getDoctrine()
+            ->getRepository('AppBundle:Section')
+            ->find($id);
+
+        $section->setOrdre($ordre);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($section);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $section->getId().'}');
+
+    }
+
+    /** Find les critères de la section
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/evaluations/section/{id}/criteres")
+     */
+
+    public function getCriteresAction($id){
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('c')
+            ->from('AppBundle:Critere','c')
+            ->where('c.section ='.$id)
+            ->orderBy('c.ordre', 'ASC');
+
+        $critere=$qb->getQuery()->getResult();
+
+        $temp = $this->get('serializer')->serialize($critere, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Find un critere de la section
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/evaluations/section/critere/{id}")
+     */
+
+    public function getCritereAction($id){
+
+        $critere = $this->getDoctrine()
+            ->getRepository('AppBundle:Critere')
+            ->find($id);
+
+        $temp = $this->get('serializer')->serialize($critere, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Add critères à la section
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"POST"})
+     *
+     */
+
+    /**
+     *POST Route annotation.
+     * @Post("/evaluations/section/{id}/add_critere")
+     */
+
+    public function postCritereAction(Request $request,$id){
+
+        $data=$request->request->all();
+
+        $section= $this->getDoctrine()
+            ->getRepository('AppBundle:Section')
+            ->find($id);
+
+        if(isset($data['type'])) {
+            $type = $this->getDoctrine()
+                ->getRepository('AppBundle:TypeCritere')
+                ->find($data['type']);
+        } else {
+            $type = $this->getDoctrine()
+                ->getRepository('AppBundle:TypeCritere')
+                ->find(1);
+        }
+
+        $critere=new Critere();
+
+        $critere->setSection($section);
+
+        if(isset($data['description'])) {
+            $critere->setDescription($data['description']);
+        }else {
+            $critere->setDescription('');
+        }
+
+        if(isset($data['points_max'])) {
+            $critere->setPointsMax($data['points_max']);
+        }else {
+            $critere->setPointsMax(1);
+        }
+
+        $critere->setType($type);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($critere);
+        $em->flush();
+
+        $critere->setOrdre($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($critere);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $critere->getId().'}');
+
+    }
+
+    /** Add critères à la section
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET","POST"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/evaluations/section/{id}/add_critere")
+     */
+
+    /**
+     *POST Route annotation.
+     * @Post("/evaluations/section/critere/{id}/update")
+     */
+
+    public function updateCritereAction(Request $request,$id){
+
+        $data=$request->request->all();
+
+        $critere= $this->getDoctrine()
+            ->getRepository('AppBundle:Critere')
+            ->find($id);
+
+        if(isset($data['type'])) {
+            $type = $this->getDoctrine()
+                ->getRepository('AppBundle:TypeCritere')
+                ->find($data['type']);
+                $critere->setType($type);
+        }
+
+        if(isset($data['description'])) {
+            $critere->setDescription($data['description']);
+        }
+
+        if(isset($data['points_max'])) {
+            $critere->setPointsMax($data['points_max']);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($critere);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $critere->getId().'}');
+
+    }
+
+    /** Update ordre de la section
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET","POST"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/evaluations/section/critere/{id}/update_ordre")
+     */
+
+    /**
+     *POST Route annotation.
+     * @Post("/evaluations/section/critere/{id}/update_ordre({ordre})")
+     */
+
+    public function updateOrdreCritereAction($ordre, $id){
+
+        $critere= $this->getDoctrine()
+            ->getRepository('AppBundle:Critere')
+            ->find($id);
+
+        $critere->setOrdre($ordre);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($critere);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $critere->getId().'}');
 
     }
 
