@@ -52,13 +52,36 @@ class UserHasCoursController extends FOSRestController
     public function getCoursAction($id)
     {
 
-        $cours = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findUserHasCoursByUser($id)->getResult();
+        $cours = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findCoursByUser($id)->getResult();
 
         $temp = $this->get('serializer')->serialize($cours, 'json');
         return new Response($temp);
 
     }
 
+    /** Find User of a Cours
+     * @param integer $id
+     * @return mixed
+     *
+     * @Method("GET")
+     * @Get("/cours/{id}/users/all")
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     */
+
+    public function getUserAction($id)
+    {
+        $user = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findUserByCours($id)->getResult();
+
+        $temp = $this->get('serializer')->serialize($user, 'json');
+        return new Response($temp);
+    }
 
     /** Add Cours to a user
      * @param integer $id
