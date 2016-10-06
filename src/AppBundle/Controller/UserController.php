@@ -159,13 +159,6 @@ class UserController extends FOSRestController
      *     }
      *     )
      *
-     * @Method("POST"})
-     *
-     */
-
-    /**
-     * POST Route annotation.
-     * @Post("/users/add")
      */
 
     public function postAction(Request $request){
@@ -199,7 +192,8 @@ class UserController extends FOSRestController
         $em->persist($user);
         $em->flush();
 
-        return new Response('{status:'. 200 .',id:'. $user->getId().'}');
+
+        return new Response(json_encode(array('status' => 200,'id'=>$user->getId())));
 
 
     }
@@ -217,7 +211,7 @@ class UserController extends FOSRestController
      *     404= "Returned when not found"
      *     }
      *     )
-     *
+     * @Method("DELETE")
      *
      */
 
@@ -232,7 +226,7 @@ class UserController extends FOSRestController
         $em->remove($user);
         $em->flush();
 
-        return new Response('HTTP_NO_CONTENT');
+        return new Response(json_encode(array('status' => 200)));
     }
 
 

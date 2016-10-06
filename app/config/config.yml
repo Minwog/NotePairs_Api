@@ -76,3 +76,12 @@ fos_rest:
         default_format: json
     view:
         view_response_listener: true
+
+nelmio_cors:
+    defaults:
+        allow_origin:  ["%cors_allow_origin%"]
+        allow_methods: ["POST", "PUT", "GET", "DELETE","PATCH","OPTIONS"]
+        allow_headers: ["content-type", "authorization"]
+        max_age:       3600
+    paths:
+        '^/': ~

@@ -70,4 +70,3 @@ AppBundle\Entity\User:
                 role_id:
                     referencedColumnName: id
             orphanRemoval: false
-    lifecycleCallbacks: {  }
