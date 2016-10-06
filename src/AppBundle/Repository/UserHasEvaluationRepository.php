@@ -10,4 +10,15 @@ namespace AppBundle\Repository;
  */
 class UserHasEvaluationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findUserHasEvaluationByUser($id)
+    {
+        return $this->_em->createQuery(
+            "
+            SELECT DISTINCT d
+            FROM AppBundle:UserHasEvaluation h
+            JOIN h.user u
+            JOIN AppBundle:Evaluation d
+            WHERE u.id=$id AND h.evaluation=d"
+        );
+    }
 }

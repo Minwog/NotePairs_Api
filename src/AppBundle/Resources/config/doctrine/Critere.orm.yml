@@ -56,5 +56,5 @@ AppBundle\Entity\Critere:
             joinColumns:
                 section_id:
                     referencedColumnName: id
-            orphanRemoval: false
     lifecycleCallbacks: {  }
+

@@ -8,6 +8,10 @@ cours:
     type: rest
     resource: 'AppBundle\Controller\CoursController'
 
+coursHasGroupe:
+    type: rest
+    resource: 'AppBundle\Controller\CoursHasGroupeController'
+
 groupe:
     type: rest
     resource: 'AppBundle\Controller\GroupeController'
@@ -20,6 +24,14 @@ userHasCours:
     type: rest
     resource: 'AppBundle\Controller\UserHasCoursController'
 
+userHasGroupe:
+    type: rest
+    resource: 'AppBundle\Controller\UserHasGroupeController'
+
 evaluations:
     type: rest
     resource: 'AppBundle\Controller\EvaluationController'
+
+userHasEvaluations:
+    type: rest
+    resource: 'AppBundle\Controller\UserHasEvaluationController'

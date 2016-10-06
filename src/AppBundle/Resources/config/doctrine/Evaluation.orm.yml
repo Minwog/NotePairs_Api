@@ -2,6 +2,7 @@ AppBundle\Entity\Evaluation:
     type: entity
     table: evaluation
     repositoryClass: AppBundle\Repository\EvaluationRepository
+    onDelete: "CASCADE"
     indexes:
         enseignant_id:
             columns:
@@ -84,7 +85,7 @@ AppBundle\Entity\Evaluation:
     manyToOne:
         enseignant:
             targetEntity: User
-            cascade: {  }
+            cascade: { }
             fetch: LAZY
             mappedBy: null
             inversedBy: null

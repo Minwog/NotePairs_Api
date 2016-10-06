@@ -1,14 +1,14 @@
-AppBundle\Entity\UserHasEvaluation:
+AppBundle\Entity\CoursHasGroupe:
     type: entity
-    table: user_has_evaluation
-    repositoryClass: AppBundle\Repository\UserHasEvaluationRepository
+    table: cours_has_groupe
+    repositoryClass: AppBundle\Repository\CoursHasGroupeRepository
     indexes:
-        user_id:
+        cours_id:
             columns:
-                - user_id
-        evaluation_id:
+                - cours_id
+        groupe_id:
             columns:
-                - evaluation_id
+                - groupe_id
     id:
         id:
             type: integer
@@ -19,8 +19,8 @@ AppBundle\Entity\UserHasEvaluation:
             generator:
                 strategy: IDENTITY
     manyToOne:
-        user:
-            targetEntity: User
+        cours:
+            targetEntity: Cours
             cascade: {  }
             fetch: LAZY
             mappedBy: null
@@ -29,13 +29,14 @@ AppBundle\Entity\UserHasEvaluation:
                 user_id:
                     referencedColumnName: id
             orphanRemoval: false
-        evaluation:
-            targetEntity: Evaluation
-            cascade: { }
+        groupe:
+            targetEntity: Groupe
+            cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 evaluation_id:
                     referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

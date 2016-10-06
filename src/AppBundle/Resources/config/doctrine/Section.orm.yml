@@ -62,5 +62,4 @@ AppBundle\Entity\Section:
             joinColumns:
                 evaluation_id:
                     referencedColumnName: id
-            orphanRemoval: false
     lifecycleCallbacks: {  }
