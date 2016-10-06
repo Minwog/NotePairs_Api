@@ -36,13 +36,13 @@ class CoursHasGroupe
     /**
      * Set cours
      *
-     * @param \AppBundle\Entity\User $cours
+     * @param \AppBundle\Entity\Cours $courss
      *
      * @return CoursHasGroupe
      */
-    public function setCours(\AppBundle\Entity\Cours $cours = null)
+    public function setCours(\AppBundle\Entity\Cours $courss = null)
     {
-        $this->cours = $cours;
+        $this->cours = $courss;
 
         return $this;
     }
