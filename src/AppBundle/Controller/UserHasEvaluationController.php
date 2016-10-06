@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Delete;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
@@ -147,6 +148,55 @@ class UserHasEvaluationController extends FOSRestController
         $em->flush();
 
         return new Response('new users assigned to evaluation with id '.$id);
+    }
+
+    /** Add evaluation to user
+     * @param integer $id_eval
+     * @param integer $id_user
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"DELETE"})
+     *
+     */
+
+    /**
+     *DELETE Route annotation.
+     * @Delete("/evaluation/{id_eval}/delete_user/{id_user}")
+     */
+
+    public function deleteUserFromEvaluationAction($id_eval, $id_user)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->find($id_user);
+
+        $eval = $this->getDoctrine()
+            ->getRepository('AppBundle:Evaluation')
+            ->find($id_eval);
+
+        $userHasEval = $this->getDoctrine()
+                            ->getRepository('AppBundle:UserHasEvaluation')
+                            ->findBy(array('user' => $user, 'evaluation' => $eval));
+
+        if ($userHasEval === null) {
+            return new Response('HTTP_NOT_FOUND');
+        }
+
+        $em->remove($userHasEval[0]);
+        $em->flush();
+
+        return new Response('HTTP_NO_CONTENT');
     }
 
 }
