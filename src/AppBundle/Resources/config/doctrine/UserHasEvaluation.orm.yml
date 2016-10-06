@@ -31,12 +31,11 @@ AppBundle\Entity\UserHasEvaluation:
             orphanRemoval: false
         evaluation:
             targetEntity: Evaluation
-            cascade: {  }
+            cascade: { }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 evaluation_id:
                     referencedColumnName: id
-            orphanRemoval: false
     lifecycleCallbacks: {  }

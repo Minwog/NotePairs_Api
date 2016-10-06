@@ -49,12 +49,12 @@ AppBundle\Entity\Critere:
             orphanRemoval: false
         section:
             targetEntity: Section
-            cascade: { "remove" }
+            cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 section_id:
                     referencedColumnName: id
-            orphanRemoval: false
     lifecycleCallbacks: {  }
+

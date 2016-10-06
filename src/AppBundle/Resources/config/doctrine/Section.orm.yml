@@ -55,12 +55,11 @@ AppBundle\Entity\Section:
             orphanRemoval: false
         evaluation:
             targetEntity: Evaluation
-            cascade: { "remove" }
+            cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 evaluation_id:
                     referencedColumnName: id
-            orphanRemoval: false
     lifecycleCallbacks: {  }

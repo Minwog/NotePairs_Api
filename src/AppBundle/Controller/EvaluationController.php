@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Delete;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use \Date;
 
@@ -286,10 +287,9 @@ class EvaluationController extends FOSRestController
      *
      */
 
-    /*public function deleteAction($id){
+    public function deleteAction($id){
 
         $em = $this->getDoctrine()->getManager();
-        //$qb = $em->createQueryBuilder();
 
         $evaluation = $this->getDoctrine()->getRepository('AppBundle:Evaluation')->find($id);
 
@@ -297,38 +297,12 @@ class EvaluationController extends FOSRestController
             return new Response('HTTP_NOT_FOUND');
         }
 
-        /*$sections=
-            $qb->select('s')
-                ->from('AppBundle:Section','s')
-                ->where('s.evaluation ='.$id)
-                ->getQuery()
-                ->getResult();
-
-        foreach((array)$sections as $s)
-        {
-            $criteres=
-                $qb->select('c')
-                    ->from('AppBundle:Critere','c')
-                    ->where('c.section ='.$s->getId())
-                    ->getQuery()
-                    ->getResult();
-        }
-
-        $userHasEvaluation=
-            $qb->select('u')
-                ->from('AppBundle:UserHasEvaluation','u')
-                ->where('u.evaluation ='.$id)
-                ->getQuery()
-                ->getResult();
-
-        $em->remove($sections);
         $em->remove($evaluation);
-        //$em->remove($userHasEvaluation);
-        //$em->remove($criteres);
         $em->flush();
 
         return new Response('HTTP_NO_CONTENT');
-    }*/
+    }
+
 
     /** Find les sections de l'evaluation
      * @param integer $id
@@ -579,6 +553,45 @@ class EvaluationController extends FOSRestController
 
     }
 
+    /** Delete une section
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"DELETE"})
+     *
+     */
+
+    /**
+     *DELETE Route annotation.
+     * @Delete("/evaluations/section/{id}")
+     */
+
+    public function deleteSectionAction($id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $section = $this->getDoctrine()->getRepository('AppBundle:Section')->find($id);
+
+        if ($section === null) {
+            return new Response('HTTP_NOT_FOUND');
+        }
+
+        $em->remove($section);
+        $em->flush();
+
+        return new Response('HTTP_NO_CONTENT');
+    }
+
+
     /** Find les critères de la section
      * @param Request $request
      * @param integer $id
@@ -827,6 +840,44 @@ class EvaluationController extends FOSRestController
 
         return new Response('{status:'. 200 .',id:'. $critere->getId().'}');
 
+    }
+
+    /** Delete un critère
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"DELETE"})
+     *
+     */
+
+    /**
+     *DELETE Route annotation.
+     * @Delete("/evaluations/section/critere/{id}")
+     */
+
+    public function deleteCritereAction($id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $critere = $this->getDoctrine()->getRepository('AppBundle:Critere')->find($id);
+
+        if ($critere === null) {
+            return new Response('HTTP_NOT_FOUND');
+        }
+
+        $em->remove($critere);
+        $em->flush();
+
+        return new Response('HTTP_NO_CONTENT');
     }
 
 }
