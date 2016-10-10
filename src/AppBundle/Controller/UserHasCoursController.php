@@ -75,7 +75,7 @@ class UserHasCoursController extends FOSRestController
      *     )
      */
 
-    public function getUserAction($id)
+    public function getUserByCoursAction($id)
     {
         $user = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findUserByCours($id)->getResult();
 
