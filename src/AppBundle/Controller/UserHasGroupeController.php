@@ -50,9 +50,40 @@ class UserHasGroupeController extends FOSRestController
     public function getGroupeAction($id)
     {
 
-        $groupe = $this->getDoctrine()->getRepository('AppBundle:UserHasGroupe')->findUserHasGroupeByUser($id)->getResult();
+        $groupe = $this->getDoctrine()->getRepository('AppBundle:UserHasGroupe')->findGroupeByUser($id)->getResult();
 
         $temp = $this->get('serializer')->serialize($groupe, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Find Users of a groupe
+     * @param integer $id
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Groupe",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method("GET")
+     *
+     */
+    /**
+     * GET Route annotation.
+     * @Get("/groupe/{id}/users/all")
+     */
+
+    public function getUserAction($id)
+    {
+
+        $user = $this->getDoctrine()->getRepository('AppBundle:UserHasGroupe')->findUserByGroupe($id)->getResult();
+
+        $temp = $this->get('serializer')->serialize($user, 'json');
         return new Response($temp);
 
     }

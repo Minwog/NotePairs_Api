@@ -26,7 +26,7 @@ AppBundle\Entity\CoursHasGroupe:
             mappedBy: null
             inversedBy: null
             joinColumns:
-                user_id:
+                cours_id:
                     referencedColumnName: id
             orphanRemoval: false
         groupe:
@@ -36,7 +36,7 @@ AppBundle\Entity\CoursHasGroupe:
             mappedBy: null
             inversedBy: null
             joinColumns:
-                evaluation_id:
+                groupe_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

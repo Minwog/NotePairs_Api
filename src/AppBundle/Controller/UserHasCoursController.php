@@ -21,9 +21,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
 /**
- * Class UserController
+ * Class UserHasCoursController
  * @package AppBundle\Controller
-*/
+ */
 
 class UserHasCoursController extends FOSRestController
 {
