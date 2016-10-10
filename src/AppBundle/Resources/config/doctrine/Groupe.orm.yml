@@ -19,16 +19,3 @@ AppBundle\Entity\Groupe:
             options:
                 fixed: false
     lifecycleCallbacks: {  }
-
-    manyToMany:
-        cours:
-          targetEntity: Cours
-          inversedBy: groupe
-          joinTable:
-            name: GroupeHasCours
-            joinColumns:
-              groupe_id:
-                referencedColumnName: id
-            inverseJoinColumns:
-              cours_id:
-                referencedColumnName: id

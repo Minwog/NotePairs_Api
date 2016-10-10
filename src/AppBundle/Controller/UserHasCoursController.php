@@ -21,9 +21,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
 /**
- * Class UserController
+ * Class UserHasCoursController
  * @package AppBundle\Controller
-*/
+ */
 
 class UserHasCoursController extends FOSRestController
 {
@@ -75,7 +75,7 @@ class UserHasCoursController extends FOSRestController
      *     )
      */
 
-    public function getUserAction($id)
+    public function getUserByCoursAction($id)
     {
         $user = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findUserByCours($id)->getResult();
 

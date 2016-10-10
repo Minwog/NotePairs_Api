@@ -1,14 +1,11 @@
 <?php
-
 namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
 use AppBundle\Entity\CoursHasGroupe;
-use AppBundle\Entity\User;
-use AppBundle\Entity\UserHasCours;
+use AppBundle\Entity\Groupe;
 use AppBundle\Entity\Cours;
-use AppBundle\Repository\UserRepository;
-use AppBundle\Repository\RoleRepository;
+use AppBundle\Repository\CoursHasGroupeRepository;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -22,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
 /**
- * Class CoursController
+ * Class CoursHasGroupeController
  * @package AppBundle\Controller
  */
 
@@ -41,11 +38,13 @@ class CoursHasGroupeController extends FOSRestController
      *     }
      *     )
      *
+     *
      * @Method("GET")
+     * GET Route annotation.
      * @Get("/cours/{id}/groupes/all")
      */
 
-    public function getGroupesAction($id)
+    public function getGroupesByCoursAction($id)
     {
 
         $groupe = $this->getDoctrine()->getRepository('AppBundle:CoursHasGroupe')->findGroupeByCours($id)->getResult();
@@ -59,19 +58,24 @@ class CoursHasGroupeController extends FOSRestController
      * @param integer $id
      * @return mixed
      *
-     * @Method("GET")
-     * @Get("/groupe/{id}/cours/all")
-     *
      * @ApiDoc(
-     *     output="AppBundle\Entity\Cours",
+     *     output="AppBundle\Entity\Groupe",
      *     statusCodes={
      *     200= "Returned when successful",
      *     404= "Returned when not found"
      *     }
      *     )
+     *
+     *
+     * @Method("GET")
+     *
+     */
+    /**
+     * GET Route annotation.
+     * @Get("/groupe/{id}/cours/all")
      */
 
-    public function getCoursAction($id)
+    public function getCoursByGroupeAction($id)
     {
         $cours = $this->getDoctrine()->getRepository('AppBundle:CoursHasGroupe')->findCoursByGroupe($id)->getResult();
 
@@ -94,9 +98,6 @@ class CoursHasGroupeController extends FOSRestController
      *     )
      *
      * @Method("POST")
-     *
-     */
-    /**
      * POST Route annotation.
      * @Post("/cours/{id}/groupe/add")
      */
