@@ -22,6 +22,12 @@ AppBundle\Entity\Cours:
             length: 100
             options:
                 fixed: false
+        description:
+            type: string
+            nullable: true
+            length: 1500
+            options:
+                fixed: false
         restreint:
             type: boolean
             nullable: true

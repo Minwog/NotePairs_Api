@@ -18,6 +18,11 @@ class Cours
     private $nom;
 
     /**
+     * @var string
+     */
+    private $description;
+
+    /**
      * @var boolean
      */
     private $restreint;
@@ -60,6 +65,30 @@ class Cours
     public function getNom()
     {
         return $this->nom;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Cours
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**

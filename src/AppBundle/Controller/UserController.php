@@ -70,6 +70,7 @@ class UserController extends FOSRestController
      *         404 = "Return when not found"
      *     }
      * )
+     *
      */
 
     public function getAction($id)
@@ -280,7 +281,7 @@ class UserController extends FOSRestController
         $em->persist($user);
         $em->flush();
 
-        return new Response('{status:'. 200 .',id:'. $user->getId().'}');
+        return new Response(json_encode(array('status' => 200)));
 
     }
 
