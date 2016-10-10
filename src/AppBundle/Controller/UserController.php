@@ -79,7 +79,6 @@ class UserController extends FOSRestController
             ->find($id);
 
         $temp = $this->get('serializer')->serialize($user, 'json');
-
         return new Response($temp);
     }
 
@@ -243,7 +242,6 @@ class UserController extends FOSRestController
      *     404= "Returned when not found"
      *     }
      *     )
-     *
      */
 
     public function putAction(Request $request){
