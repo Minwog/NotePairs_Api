@@ -186,8 +186,8 @@ class UserHasEvaluationController extends FOSRestController
             ->find($id_eval);
 
         $userHasEval = $this->getDoctrine()
-                            ->getRepository('AppBundle:UserHasEvaluation')
-                            ->findBy(array('user' => $user, 'evaluation' => $eval));
+            ->getRepository('AppBundle:UserHasEvaluation')
+            ->findBy(array('user' => $user, 'evaluation' => $eval));
 
         if ($userHasEval === null) {
             return new Response('HTTP_NOT_FOUND');
@@ -198,5 +198,30 @@ class UserHasEvaluationController extends FOSRestController
 
         return new Response('HTTP_NO_CONTENT');
     }
+
+    /** Check number of evaluations for each user
+     * @param integer $id_eval
+     * @param integer $id_user
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"DELETE"})
+     *
+     */
+
+    /**
+     *DELETE Route annotation.
+     * @Delete("/evaluation/{id_eval}/delete_user/{id_user}")
+     */
+
+
 
 }
