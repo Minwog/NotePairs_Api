@@ -23,6 +23,11 @@ class Cours
     private $description;
 
     /**
+     * @var string
+     */
+    private $image;
+
+    /**
      * @var boolean
      */
     private $restreint;
@@ -89,6 +94,30 @@ class Cours
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Cours
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 
     /**

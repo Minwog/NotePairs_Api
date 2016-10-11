@@ -28,6 +28,12 @@ AppBundle\Entity\Cours:
             length: 1500
             options:
                 fixed: false
+        image:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
         restreint:
             type: boolean
             nullable: true

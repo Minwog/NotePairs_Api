@@ -116,7 +116,6 @@ class UserController extends FOSRestController
 
     /** Gets a users by RoleId
      * @param integer $id
-     *
      * @return mixed
      *
      * @ApiDoc(
@@ -127,7 +126,6 @@ class UserController extends FOSRestController
      *     }
      *     )
      */
-
     /**
      * GET Route annotation.
      * @Get("/userbyrole/{id}")

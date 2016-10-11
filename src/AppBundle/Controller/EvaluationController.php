@@ -88,6 +88,33 @@ class EvaluationController extends FOSRestController
         return new Response($temp);
     }
 
+    /** Gets an evaluation by CoursId
+     * @param integer $id
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *         200 = "Returned when successful",
+     *         404 = "Return when not found"
+     *     }
+     * )
+     */
+    /**
+     * GET Route annotation.
+     * @Get("/evaluationsbycours/{id}")
+     */
+    public function getByCoursAction($id)
+    {
+        $cours = $this->getDoctrine()->getRepository('AppBundle:Cours')->find($id);
+        $evaluation = $this->getDoctrine()
+            ->getRepository('AppBundle:Evaluation')
+            ->findBy(array('cours'=>$cours));
+
+        $temp = $this->get('serializer')->serialize($evaluation, 'json');
+        return new Response($temp);
+    }
+
     /** Create an evaluation
      * @param Request $request
      *
