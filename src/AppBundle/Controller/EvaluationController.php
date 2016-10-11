@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use \Date;
@@ -101,13 +102,8 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method("POST"})
+     * @Method("POST")
      *
-     */
-
-    /**
-     * POST Route annotation.
-     * @Post("/evaluations/add")
      */
 
     public function postAction(Request $request){
@@ -203,13 +199,8 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
-     */
-
-    /**
-     * POST Route annotation.
-     * @Post("/evaluations/update/{id}")
      */
 
     public function updateAction(Request $request, $id){
@@ -357,7 +348,7 @@ class EvaluationController extends FOSRestController
      */
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}")
+     * @Get("/section/{id}")
      */
 
     public function getSectionAction($id){
@@ -460,18 +451,18 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/update")
+     * @Get("/evaluations/section/{id}")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/{id}/update")
+     *PUT Route annotation.
+     * @Put("/sections/{id}")
      */
 
     public function updateSectionAction(Request $request, $id){
@@ -523,21 +514,21 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/update_ordre")
+     * @Get("/sections/{id}/update_ordre")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/{id}/update_ordre({ordre})")
+     *PUT Route annotation.
+     * @Put("/sections/{id}/update_ordre/{ordre}")
      */
 
-    public function updateOrdreSectionAction($ordre, $id){
+    public function updateOrdreSectionAction($id, $ordre){
 
         $section= $this->getDoctrine()
             ->getRepository('AppBundle:Section')
@@ -572,7 +563,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *DELETE Route annotation.
-     * @Delete("/evaluations/section/{id}")
+     * @Delete("/sections/{id}")
      */
 
     public function deleteSectionAction($id){
@@ -612,7 +603,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/criteres")
+     * @Get("/sections/{id}/criteres")
      */
 
     public function getCriteresAction($id){
@@ -652,7 +643,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/critere/{id}")
+     * @Get("/criteres/{id}")
      */
 
     public function getCritereAction($id){
@@ -686,7 +677,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *POST Route annotation.
-     * @Post("/evaluations/section/{id}/add_critere")
+     * @Post("/sections/{id}/add_critere")
      */
 
     public function postCritereAction(Request $request,$id){
@@ -753,18 +744,18 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/add_critere")
+     * @Get("/criteres.{id}")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/critere/{id}/update")
+     *PUT Route annotation.
+     * @Put("criteres/{id}")
      */
 
     public function updateCritereAction(Request $request,$id){
@@ -812,21 +803,21 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/critere/{id}/update_ordre")
+     * @Get("/criteres/{id}/update_ordre")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/critere/{id}/update_ordre({ordre})")
+     *PUT Route annotation.
+     * @Put("/criteres/{id}/update_ordre({ordre})")
      */
 
-    public function updateOrdreCritereAction($ordre, $id){
+    public function updateOrdreCritereAction($id, $ordre){
 
         $critere= $this->getDoctrine()
             ->getRepository('AppBundle:Critere')
@@ -861,7 +852,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *DELETE Route annotation.
-     * @Delete("/evaluations/section/critere/{id}")
+     * @Delete("/criteres/{id}")
      */
 
     public function deleteCritereAction($id){
