@@ -49,7 +49,7 @@ class UserHasCoursController extends FOSRestController
      * @Get("/users/{id}/cours/all")
      */
 
-    public function getCoursAction($id)
+    public function getCoursbyUserAction($id)
     {
 
         $cours = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findCoursByUser($id)->getResult();

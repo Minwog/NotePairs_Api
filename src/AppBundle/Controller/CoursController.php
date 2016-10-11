@@ -145,7 +145,7 @@ class CoursController extends FOSRestController
         $cours=new Cours();
 
         if(isset($data["categorie_id"])){
-            $categorie = $this->getDoctrine()->getRepository('AppBundle:Categorie')->find($data["id"]);
+            $categorie = $this->getDoctrine()->getRepository('AppBundle:Categorie')->find($data["categorie_id"]);
             $cours->setCategorie($categorie);
         }
         if(isset($data["description"])){
