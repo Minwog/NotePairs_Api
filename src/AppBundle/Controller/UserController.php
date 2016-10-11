@@ -24,7 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * Class UserController
  * @package AppBundle\Controller
- *  @RouteResource("user")
+ *  @RouteResource("users")
  */
 
 
@@ -68,9 +68,8 @@ class UserController extends FOSRestController
      *     statusCodes={
      *         200 = "Returned when successful",
      *         404 = "Return when not found"
-     *     }
-     * )
-     *
+     *     })
+     * @Get("users/{id}")
      */
 
     public function getAction($id)
@@ -210,7 +209,6 @@ class UserController extends FOSRestController
      *     404= "Returned when not found"
      *     }
      *     )
-     * @Method("DELETE")
      *
      */
 
@@ -244,17 +242,17 @@ class UserController extends FOSRestController
      *     )
      */
 
-    public function updateAction($id,Request $request){
+    public function putAction(Request $request){
 
         $data=$request->request->all();
 
-        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($data["id"]);
         if ($user === null) {
-            return new Response('HTTP_NOT_FOUND');
+            return new Response(json_encode(array('status' => 404)));
         }
 
         if(isset($data["nom"])){
-            $user->setNom($data['nom']);
+            $user->setNom($data["nom"]);
         }
         if(isset($data["prenom"])){
             $user->setPrenom($data['prenom']);
