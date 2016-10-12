@@ -137,18 +137,27 @@ class CoursController extends FOSRestController
      *     404= "Returned when not found"
      *     }
      *     )
-     *
-     * POST Route annotation.
-     * @Post("/cours/add")
      */
 
     public function postAction(Request $request){
         $data=$request->request->all();
 
         $cours=new Cours();
-        $cours->setNom($data['nom']);
-        $cours->setRestreint($data['restreint']);
-        $cours->setCategorie($data['categorie']);
+
+        if(isset($data["categorie_id"])){
+            $categorie = $this->getDoctrine()->getRepository('AppBundle:Categorie')->find($data["categorie_id"]);
+            $cours->setCategorie($categorie);
+        }
+        if(isset($data["description"])){
+            $cours->setDescription($data["description"]);
+        }
+
+        if(isset($data["nom"])){
+            $cours->setNom($data["nom"]);
+        }
+        if(isset($data["restreint"])){
+            $cours->setRestreint($data['restreint']);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($cours);
@@ -171,15 +180,14 @@ class CoursController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
-     * @Post("/cours/update/{id}")
+     * @Method({"GET","PUT"})
      */
 
-    public function updateAction(Request $request, $id){
+    public function putAction(Request $request){
         $data=$request->request->all();
 
         $cours = $this->getDoctrine()->getRepository('AppBundle:Cours')
-            ->find($id);
+            ->find($data["id"]);
 
         if(isset($data['nom'])){
             $cours->setNom($data['nom']);
@@ -220,7 +228,7 @@ class CoursController extends FOSRestController
         $em->remove($cours);
         $em->flush();
 
-        return new Response('HTTP_NO_CONTENT');
+        return new Response(json_encode(array('status' => 200)));
     }
 
 

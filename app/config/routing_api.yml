@@ -35,3 +35,7 @@ evaluations:
 userHasEvaluations:
     type: rest
     resource: 'AppBundle\Controller\UserHasEvaluationController'
+
+categorie:
+    type: rest
+    resource: 'AppBundle\Controller\CategorieController'
