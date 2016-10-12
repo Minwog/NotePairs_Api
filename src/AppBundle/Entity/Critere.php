@@ -38,11 +38,19 @@ class Critere
     private $section;
 
 
+
+
+    /**
+     * @var \AppBundle\Entity\Trapeze
+     */
+
+    private $trapeze;
+
     /**
      * Get id
-     *
      * @return integer
      */
+
     public function getId()
     {
         return $this->id;
@@ -167,4 +175,30 @@ class Critere
     {
         return $this->section;
     }
+
+     /**
+      * Get trapeze
+      *
+      * @return \AppBundle\Entity\Trapeze
+      */
+    public function getTrapeze()
+    {
+        return $this->trapeze;
+    }
+
+
+    /**
+     * Set trapeze
+     *
+     * @param \AppBundle\Entity\Trapeze $trapeze
+     *
+     * @return Critere
+     */
+    public function setTrapeze($trapeze)
+    {
+        $this->trapeze = $trapeze;
+
+        return $this;
+    }
+
 }
