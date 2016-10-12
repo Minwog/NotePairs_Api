@@ -12,6 +12,7 @@ use AppBundle\AppBundle;
 use AppBundle\Entity\Evaluation;
 use AppBundle\Entity\Section;
 use AppBundle\Entity\Critere;
+use AppBundle\Entity\Parametre;
 use AppBundle\Repository\EvaluationRepository;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -123,8 +124,18 @@ class EvaluationController extends FOSRestController
         $evaluation->setCours($cours);
         $evaluation->setModeCalcul($modeCalcul);
         $evaluation->setNom($data['nom']);
-        $evaluation->setDateRendu(DateTime::createFromFormat('d/m/Y', $data['date_rendu']));
-        $evaluation->setDateFinCorrection(DateTime::createFromFormat('d/m/Y', $data['date_fin_correction']));
+        /*$evaluation->setDateRendu('date_rendu', DateType::class, array(
+            'widget' => 'single_text',
+            // this is actually the default format for single_text
+            'format' => 'd/m/Y',
+        ));
+        $evaluation->setDateRendu('date_fin_correction', DateType::class, array(
+            'widget' => 'single_text',
+            // this is actually the default format for single_text
+            'format' => 'yyyy-MM-dd',
+        ));
+            /*Date::createFromFormat('d/m/Y', $data['date_rendu']));
+        $evaluation->setDateFinCorrection(Date::createFromFormat('d/m/Y', $data['date_fin_correction']));*/
         $evaluation->setNombreEval($data['nombreEval']);
         if(isset($data['anonymat'])){
             $evaluation->setAnonymat($data['anonymat']);
@@ -179,7 +190,7 @@ class EvaluationController extends FOSRestController
         $em->persist($evaluation);
         $em->flush();
 
-        return new Response('{status:'. 200 .',id:'. $evaluation->getId().'}');
+        return new Response(json_encode(array('id'=>$evaluation->getId())));
 
 
     }
@@ -203,12 +214,12 @@ class EvaluationController extends FOSRestController
      *
      */
 
-    public function updateAction(Request $request, $id){
+    public function putAction(Request $request){
         $data=$request->request->all();
 
         $evaluation = $this->getDoctrine()
             ->getRepository('AppBundle:Evaluation')
-            ->find($id);
+            ->find($data['id']);
 
         if(isset($data['mode_calcul'])) {
             $modeCalcul = $this->getDoctrine()->getRepository('AppBundle:ModeCalcul')->find($data['mode_calcul']);
@@ -436,6 +447,108 @@ class EvaluationController extends FOSRestController
         return new Response('{status:'. 200 .',id:'. $section->getId().'}');
 
     }
+
+    /** Get all type rendu
+     *
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/type_rendu")
+     */
+
+    public function cgetTypeRenduAction(){
+
+        $typeRendu = $this->getDoctrine()
+            ->getRepository('AppBundle:Parametre')
+            ->findBy(array(), array());
+
+        $temp = $this->get('serializer')->serialize($typeRendu, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Get type rendu (pour une section)
+     * @param integer $e
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/type_rendu/{e}")
+     */
+
+    public function getTypeRenduAction($e){
+
+        $typeRendu = $this->getDoctrine()
+            ->getRepository('AppBundle:Parametre')
+            ->findBy(array('extension'=>$e));
+
+        $temp = $this->get('serializer')->serialize($typeRendu, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Create type rendu (pour une section)
+     * @param integer $e
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"POST"})
+     *
+     */
+
+    /**
+     *POST Route annotation.
+     * @Post("/type_rendu/{e}")
+     */
+
+    public function createTypeRenduAction($e){
+
+        $typeRendu=new Parametre();
+        $typeRendu->setExtension($e);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($typeRendu);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $typeRendu->getId().'}');
+
+    }
+
 
     /** Update sections
      * @param Request $request
@@ -677,7 +790,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *POST Route annotation.
-     * @Post("/sections/{id}/add_critere")
+     * @Post("/sections/{id}/criteres")
      */
 
     public function postCritereAction(Request $request,$id){
