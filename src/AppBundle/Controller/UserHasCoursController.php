@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Delete;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
@@ -49,7 +50,7 @@ class UserHasCoursController extends FOSRestController
      * @Get("/users/{id}/cours/all")
      */
 
-    public function getUsersCoursAction($id)
+    public function getCoursbyUserAction($id)
     {
 
         $cours = $this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findCoursByUser($id)->getResult();
@@ -120,5 +121,89 @@ class UserHasCoursController extends FOSRestController
        $em->flush();
 
         return new Response('new Cours assigned to user with id '.$id);
+    }
+
+    /** Add Cours to a user
+     * @param integer $coursid
+     * @param integer $userid
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method("DELETE")
+     *
+     */
+    /**
+     * DELETE Route annotation.
+     * @Delete("/cours/{coursid}/users/{userid}")
+     */
+
+    public function deleteUserfromCoursAction($coursid,$userid){
+        $user=$this->getDoctrine()->getRepository('AppBundle:User')->find($userid);
+        $cours=$this->getDoctrine()->getRepository('AppBundle:Cours')->find($coursid);
+        if($user==null || $cours==null){
+            return new Response(json_encode(array('status'=>404)));
+        }
+        $userHasCours=$this->getDoctrine()->getRepository('AppBundle:UserHasCours')->findOneBy(array('user'=>$user,'cours'=>$cours));
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($userHasCours);
+        $em->flush();
+        return new Response(json_encode(array('status'=>200)));
+    }
+
+
+    /** Add User to Cours
+     * @param integer $id
+     * @param Request $request
+     *
+     *request : tableau d'ids d'user a ajouter au cours.
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\User",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method("POST")
+     *
+     */
+    /**
+     * POST Route annotation.
+     * @Post("/cours/{id}/users/add")
+     */
+
+    public function addUserToCoursAction($id,Request $request){
+        $data=$request->request->all();
+        $cours=$this->getDoctrine()->getRepository('AppBundle:Cours')->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $fail=0;
+        foreach ($data as $d) {
+            $newUser= $this->getDoctrine()->getRepository('AppBundle:User')->find($d);
+            if($newUser==null){
+                $fail++;
+            }
+            $userHasCours=new UserHasCours();
+            $userHasCours->setUser($newUser);
+            $userHasCours->setCours($cours);
+            $em->persist($userHasCours);
+        }
+
+        if($fail>0){
+            return new Response(json_encode(array('status'=>1,'fail'=>$fail)));
+        }
+        $em->flush();
+
+        return new Response(json_encode(array('status'=>200,)));
     }
 }

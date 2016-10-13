@@ -148,7 +148,6 @@ class GroupeController extends FOSRestController
 
 
     /** Update general information of a groupe
-     * @param integer $id
      * @param Request $request
      *
      * @return mixed
@@ -162,7 +161,7 @@ class GroupeController extends FOSRestController
      *     )
      */
 
-    public function updateAction($id,Request $request){
+    public function putAction(Request $request){
 
         $data=$request->request->all();
 

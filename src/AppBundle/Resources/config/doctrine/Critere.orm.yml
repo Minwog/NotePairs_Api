@@ -56,5 +56,15 @@ AppBundle\Entity\Critere:
             joinColumns:
                 section_id:
                     referencedColumnName: id
+    oneToOne:
+        trapeze:
+            targetEntity: Trapeze
+            cascade: {}
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: trapeze
+            joinColumn:
+                    name: trapeze_id
+                    referencedColumnName: id
     lifecycleCallbacks: {  }
 

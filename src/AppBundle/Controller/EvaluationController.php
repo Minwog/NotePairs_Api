@@ -12,6 +12,7 @@ use AppBundle\AppBundle;
 use AppBundle\Entity\Evaluation;
 use AppBundle\Entity\Section;
 use AppBundle\Entity\Critere;
+use AppBundle\Entity\Parametre;
 use AppBundle\Repository\EvaluationRepository;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use \Date;
@@ -128,13 +130,8 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method("POST"})
+     * @Method("POST")
      *
-     */
-
-    /**
-     * POST Route annotation.
-     * @Post("/evaluations/add")
      */
 
     public function postAction(Request $request){
@@ -154,8 +151,18 @@ class EvaluationController extends FOSRestController
         $evaluation->setCours($cours);
         $evaluation->setModeCalcul($modeCalcul);
         $evaluation->setNom($data['nom']);
-        $evaluation->setDateRendu(DateTime::createFromFormat('d/m/Y', $data['date_rendu']));
-        $evaluation->setDateFinCorrection(DateTime::createFromFormat('d/m/Y', $data['date_fin_correction']));
+        /*$evaluation->setDateRendu('date_rendu', DateType::class, array(
+            'widget' => 'single_text',
+            // this is actually the default format for single_text
+            'format' => 'd/m/Y',
+        ));
+        $evaluation->setDateRendu('date_fin_correction', DateType::class, array(
+            'widget' => 'single_text',
+            // this is actually the default format for single_text
+            'format' => 'yyyy-MM-dd',
+        ));
+            /*Date::createFromFormat('d/m/Y', $data['date_rendu']));
+        $evaluation->setDateFinCorrection(Date::createFromFormat('d/m/Y', $data['date_fin_correction']));*/
         $evaluation->setNombreEval($data['nombreEval']);
         if(isset($data['anonymat'])){
             $evaluation->setAnonymat($data['anonymat']);
@@ -210,7 +217,7 @@ class EvaluationController extends FOSRestController
         $em->persist($evaluation);
         $em->flush();
 
-        return new Response('{status:'. 200 .',id:'. $evaluation->getId().'}');
+        return new Response(json_encode(array('id'=>$evaluation->getId())));
 
 
     }
@@ -230,21 +237,16 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
-    /**
-     * POST Route annotation.
-     * @Post("/evaluations/update/{id}")
-     */
-
-    public function updateAction(Request $request, $id){
+    public function putAction(Request $request){
         $data=$request->request->all();
 
         $evaluation = $this->getDoctrine()
             ->getRepository('AppBundle:Evaluation')
-            ->find($id);
+            ->find($data['id']);
 
         if(isset($data['mode_calcul'])) {
             $modeCalcul = $this->getDoctrine()->getRepository('AppBundle:ModeCalcul')->find($data['mode_calcul']);
@@ -384,7 +386,7 @@ class EvaluationController extends FOSRestController
      */
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}")
+     * @Get("/section/{id}")
      */
 
     public function getSectionAction($id){
@@ -473,6 +475,108 @@ class EvaluationController extends FOSRestController
 
     }
 
+    /** Get all type rendu
+     *
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/type_rendu")
+     */
+
+    public function cgetTypeRenduAction(){
+
+        $typeRendu = $this->getDoctrine()
+            ->getRepository('AppBundle:Parametre')
+            ->findBy(array(), array());
+
+        $temp = $this->get('serializer')->serialize($typeRendu, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Get type rendu (pour une section)
+     * @param integer $e
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"GET"})
+     *
+     */
+
+    /**
+     *GET Route annotation.
+     * @Get("/type_rendu/{e}")
+     */
+
+    public function getTypeRenduAction($e){
+
+        $typeRendu = $this->getDoctrine()
+            ->getRepository('AppBundle:Parametre')
+            ->findBy(array('extension'=>$e));
+
+        $temp = $this->get('serializer')->serialize($typeRendu, 'json');
+        return new Response($temp);
+
+    }
+
+    /** Create type rendu (pour une section)
+     * @param integer $e
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     output="AppBundle\Entity\Evaluation",
+     *     statusCodes={
+     *     200= "Returned when successful",
+     *     404= "Returned when not found"
+     *     }
+     *     )
+     *
+     * @Method({"POST"})
+     *
+     */
+
+    /**
+     *POST Route annotation.
+     * @Post("/type_rendu/{e}")
+     */
+
+    public function createTypeRenduAction($e){
+
+        $typeRendu=new Parametre();
+        $typeRendu->setExtension($e);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($typeRendu);
+        $em->flush();
+
+        return new Response('{status:'. 200 .',id:'. $typeRendu->getId().'}');
+
+    }
+
+
     /** Update sections
      * @param Request $request
      * @param integer $id
@@ -487,18 +591,18 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/update")
+     * @Get("/evaluations/section/{id}")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/{id}/update")
+     *PUT Route annotation.
+     * @Put("/sections/{id}")
      */
 
     public function updateSectionAction(Request $request, $id){
@@ -550,21 +654,21 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/update_ordre")
+     * @Get("/sections/{id}/update_ordre")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/{id}/update_ordre({ordre})")
+     *PUT Route annotation.
+     * @Put("/sections/{id}/update_ordre/{ordre}")
      */
 
-    public function updateOrdreSectionAction($ordre, $id){
+    public function updateOrdreSectionAction($id, $ordre){
 
         $section= $this->getDoctrine()
             ->getRepository('AppBundle:Section')
@@ -599,7 +703,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *DELETE Route annotation.
-     * @Delete("/evaluations/section/{id}")
+     * @Delete("/sections/{id}")
      */
 
     public function deleteSectionAction($id){
@@ -639,7 +743,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/criteres")
+     * @Get("/sections/{id}/criteres")
      */
 
     public function getCriteresAction($id){
@@ -679,7 +783,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/critere/{id}")
+     * @Get("/criteres/{id}")
      */
 
     public function getCritereAction($id){
@@ -713,7 +817,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *POST Route annotation.
-     * @Post("/evaluations/section/{id}/add_critere")
+     * @Post("/sections/{id}/criteres")
      */
 
     public function postCritereAction(Request $request,$id){
@@ -780,18 +884,18 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/{id}/add_critere")
+     * @Get("/criteres.{id}")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/critere/{id}/update")
+     *PUT Route annotation.
+     * @Put("criteres/{id}")
      */
 
     public function updateCritereAction(Request $request,$id){
@@ -839,21 +943,21 @@ class EvaluationController extends FOSRestController
      *     }
      *     )
      *
-     * @Method({"GET","POST"})
+     * @Method({"GET","PUT"})
      *
      */
 
     /**
      *GET Route annotation.
-     * @Get("/evaluations/section/critere/{id}/update_ordre")
+     * @Get("/criteres/{id}/update_ordre")
      */
 
     /**
-     *POST Route annotation.
-     * @Post("/evaluations/section/critere/{id}/update_ordre({ordre})")
+     *PUT Route annotation.
+     * @Put("/criteres/{id}/update_ordre({ordre})")
      */
 
-    public function updateOrdreCritereAction($ordre, $id){
+    public function updateOrdreCritereAction($id, $ordre){
 
         $critere= $this->getDoctrine()
             ->getRepository('AppBundle:Critere')
@@ -888,7 +992,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *DELETE Route annotation.
-     * @Delete("/evaluations/section/critere/{id}")
+     * @Delete("/criteres/{id}")
      */
 
     public function deleteCritereAction($id){
