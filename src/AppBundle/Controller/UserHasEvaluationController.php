@@ -35,7 +35,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class UserHasEvaluationController extends FOSRestController
 {
 
-    /** Find all evaluations
+    /** Find Evaluations by User
      * @param integer $id
      *
      * @return mixed
