@@ -31,7 +31,7 @@ class TypeCritere
     /**
      * Set type
      *
-     * @param integer $type
+     * @param string $type
      *
      * @return TypeCritere
      */
@@ -45,7 +45,7 @@ class TypeCritere
     /**
      * Get type
      *
-     * @return integer
+     * @return string
      */
     public function getType()
     {

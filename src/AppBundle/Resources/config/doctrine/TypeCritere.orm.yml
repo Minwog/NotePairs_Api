@@ -13,7 +13,7 @@ AppBundle\Entity\TypeCritere:
                 strategy: IDENTITY
     fields:
         type:
-            type: integer
+            type: string
             nullable: true
             options:
                 unsigned: false
