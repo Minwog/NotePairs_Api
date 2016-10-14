@@ -39,3 +39,7 @@ userHasEvaluations:
 categorie:
     type: rest
     resource: 'AppBundle\Controller\CategorieController'
+
+copie:
+    type: rest
+    resource: 'AppBundle\Controller\CopieController'

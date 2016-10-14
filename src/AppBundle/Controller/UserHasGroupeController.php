@@ -47,7 +47,7 @@ class UserHasGroupeController extends FOSRestController
      * @Get("/users/{id}/groupe/all")
      */
 
-    public function getGroupeAction($id)
+    public function getGroupeByUserAction($id)
     {
 
         $groupe = $this->getDoctrine()->getRepository('AppBundle:UserHasGroupe')->findGroupeByUser($id)->getResult();
@@ -56,6 +56,8 @@ class UserHasGroupeController extends FOSRestController
         return new Response($temp);
 
     }
+
+
 
     /** Find Users of a groupe
      * @param integer $id
