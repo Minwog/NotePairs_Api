@@ -860,7 +860,7 @@ class EvaluationController extends FOSRestController
         $em->persist($critere);
         $em->flush();
 
-        $critere->setOrdre($id);
+        $critere->setOrdre($data['ordre']);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($critere);
@@ -954,7 +954,7 @@ class EvaluationController extends FOSRestController
 
     /**
      *PUT Route annotation.
-     * @Put("/criteres/{id}/update_ordre({ordre})")
+     * @Put("/criteres/{id}/update_ordre/{ordre}")
      */
 
     public function updateOrdreCritereAction($id, $ordre){
